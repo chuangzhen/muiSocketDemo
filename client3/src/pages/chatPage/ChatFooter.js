@@ -1,22 +1,23 @@
 import React, { useState } from 'react';
 
-const ChatFooter = ({socket}) => {
+const ChatFooter = ({ socket }) => {
   const [message, setMessage] = useState('');
 
-  const handleTyping = () =>
+  const handleTyping = () => {
     socket.emit('typing', `${localStorage.getItem('userName')} 正在输入`);
-
+  }
 
   const handleSendMessage = (e) => {
     e.preventDefault();
     if (message.trim() && localStorage.getItem('userName')) {
-        socket.emit('message', {
-          text: message,
-          name: localStorage.getItem('userName'),
-          id: `${socket.id}${Math.random()}`,
-          socketID: socket.id,
-        });
-      }
+      socket.emit('message', {
+        text: message,
+        name: localStorage.getItem('userName'),
+        id: `${socket.id}${Math.random()}`,
+        socketID: socket.id,
+      });
+      socket.emit('typing', '');
+    }
     setMessage('');
   };
   return (
@@ -29,7 +30,6 @@ const ChatFooter = ({socket}) => {
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           onKeyDown={handleTyping}
-
         />
         <button className="sendBtn">发送</button>
       </form>

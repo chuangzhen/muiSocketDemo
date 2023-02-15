@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const Home = ({ socket }) => {
@@ -12,6 +12,10 @@ const Home = ({ socket }) => {
 
     navigate('/chat');
   };
+
+  useEffect(() => {
+     fetch('http://localhost:4000/api').then(res => res.json()).then(res => console.log(res))
+  },[])
   return (
     <form className="home__container" onSubmit={handleSubmit}>
       <h2 className="home__header">登录聊天</h2>

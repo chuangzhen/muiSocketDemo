@@ -1,12 +1,17 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const ChatBody = ({ messages, lastMessageRef, typingStatus }) => {
+const ChatBody = ({ messages, lastMessageRef, typingStatus ,socket}) => {
   const navigate = useNavigate();
 
   const handleLeaveChat = () => {
     localStorage.removeItem('userName');
     navigate('/');
+
+    //退出登录客户端主动断开连接，不刷新页面
+    // socket.disconnect()
+
+    // 刷新页面会触发disconnect事件，重新建立新的socket连接
     window.location.reload();
   };
 

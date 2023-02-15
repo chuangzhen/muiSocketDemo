@@ -9,6 +9,8 @@ const PORT = 4000
 app.use(cors());
 let users = [];
 
+console.log(users,'==users');
+
 const socketIO = new Server(server, {
     cors: {
         origin: "http://localhost:3000"
@@ -30,6 +32,7 @@ socketIO.on('connection', (socket) => {
         socketIO.emit('messageResponse', data);
     });
 
+    // socket.broadcast.emit(eveentName,data) 表示触发该事件广播给除了自己的其他所以socket连接
     socket.on('typing', (data) => socket.broadcast.emit('typingResponse', data));
 
 
@@ -37,14 +40,14 @@ socketIO.on('connection', (socket) => {
     socket.on('newUser', (data) => {
         // 添加新用户到 users 中
         users.push(data);
-        // console.log(users);
+        console.log(users);
 
         // 发送用户列表到客户端
         socketIO.emit('newUserResponse', users);
     });
 
     socket.on('disconnect', () => {
-        console.log('🔥: 一个用户已断开连接');
+        console.log('🔥: 一个用户已断开连接',socket.id);
         // 当用户下线的时候更新用户列表
         users = users.filter((user) => user.socketID !== socket.id);
         // console.log(users);

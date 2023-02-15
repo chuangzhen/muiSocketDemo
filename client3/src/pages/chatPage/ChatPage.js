@@ -10,7 +10,9 @@ const ChatPage = ({ socket }) => {
 
 
     useEffect(() => {
-        socket.on('messageResponse', (data) => setMessages([...messages, data]));
+        socket.on('messageResponse', (data) => {
+            setMessages([...messages, data])
+        });
     }, [socket, messages]);
 
     useEffect(() => {
@@ -20,20 +22,24 @@ const ChatPage = ({ socket }) => {
 
 
     useEffect(() => {
-        socket.on('typingResponse', (data) => setTypingStatus(data));
-      }, [socket]);
+        socket.on('typingResponse', (data) => {
+            // console.log('typingResponse',data);
+            setTypingStatus(data)
+        });
+    }, [socket]);
 
 
     return (
         <div className="chat">
-        <ChatBar socket={socket}  />
-        <div className="chat__main">
-            <ChatBody 
-                messages={messages} 
-                typingStatus={typingStatus}
-                lastMessageRef={lastMessageRef}  />
-            <ChatFooter socket={socket} />
-        </div>
+            <ChatBar socket={socket} />
+            <div className="chat__main">
+                <ChatBody
+                    socket={socket}
+                    messages={messages}
+                    typingStatus={typingStatus}
+                    lastMessageRef={lastMessageRef} />
+                <ChatFooter socket={socket} />
+            </div>
         </div>
     );
 };
